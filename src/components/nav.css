@@ -1,0 +1,56 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f2f2f2;
+  }
+  
+  /* Styles for the links */
+  .links {
+    display: flex;
+    align-items: center;
+  }
+  
+  .links a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #333;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .links a:hover {
+    background-color: #ccc;
+  }
+  
+  /* Styles for the user section */
+  .user {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user p {
+    margin-right: 10px;
+  }
+  
+  .user img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .user button {
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .user button:hover {
+    background-color: #555;
+  }
