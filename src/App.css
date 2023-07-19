@@ -144,3 +144,11 @@
 .signIn #signInBtn:hover {
   background-color: #3367D6; /* Darker Google blue */
 }
+
+.comment button {
+  display: none;
+}
+
+.comment:hover button {
+  display: inline;
+}

@@ -13,8 +13,10 @@ interface Like{
     userId:string;
 }
 export interface Comment{
+    username:string,
     userId:string,
     userComment:string;
+    commentId:number
 }
 
 export const Post = (props: Props) => {
@@ -71,23 +73,45 @@ export const Post = (props: Props) => {
     const commentsRef = collection(db, "comments")
     const commentsDoc = query(commentsRef, where("postId","==",post.id))
     
+    
     const handleChange = (event: any) =>{
         setNewComment(event.target.value);
     }
     const getComments = async () => {
         const data = await getDocs(commentsDoc);
-        setCommentsList(data.docs.map((doc) =>({userId: doc.data().userId, userComment:doc.data().userComment}) ));
+        setCommentsList(data.docs.map((doc) =>({userId: doc.data().userId, userComment:doc.data().userComment,username:doc.data().username,commentId:doc.data().commentId})));
     };
     const addComment = async () => {
         
         const newDoc = await addDoc(commentsRef,{
-            userId: user?.displayName,
+            userId: user?.uid,
             postId: post.id,
+            username:user?.displayName,
             userComment:newComment,
+            commentId:commentsList?.length,
         })
         getComments();
         
     };
+    const removeComment = async (commentId:number) => {
+        try{
+            const commentToDeleteQuery = query(
+                commentsRef, 
+                where("postId","==", post.id), 
+                where("userId", "==" , user?.uid),
+                where("commentId","==", commentId)
+            );
+            const commentToDeleteData = await getDocs(commentToDeleteQuery);
+            const likeId = commentToDeleteData.docs[0].id
+            const commentToDelete = doc(db,"comments",commentToDeleteData.docs[0].id);
+            await deleteDoc(commentToDelete);
+            getComments();
+        } catch(err){
+            console.log(err);
+        }
+        
+    };
+
     useEffect(() =>{
         getComments();
     },[])
@@ -101,7 +125,7 @@ export const Post = (props: Props) => {
             </div>
             <div className="body">
                 <p>{post.description}</p>
-                <div>{commentsList?.map((abcde) => (<CommentPost comment={abcde}/>))}</div>
+                <div>{commentsList?.map((eachComment) => (<CommentPost comment={eachComment} removeComment={removeComment}/>))}</div>
             </div>
             <div className="comment">
                 <input type="text" placeholder="type your comment here..." onChange={(event)=>{handleChange(event)}}></input>
