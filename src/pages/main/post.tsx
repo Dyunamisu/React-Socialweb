@@ -1,12 +1,14 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../config/firebase";
 import { Post as IPost } from "./main"
-import { addDoc, getDocs,  collection , query, where ,deleteDoc, doc} from "firebase/firestore";
+import { addDoc, getDocs,  collection , query, where ,deleteDoc, doc, documentId} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { CommentPost } from "./comment";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     post: IPost;
+    removePost:any;
 }
 interface Like{
     likeId:string,
@@ -63,6 +65,26 @@ export const Post = (props: Props) => {
         }
         
     };
+    const removeLikes = async () => { 
+        // remove all the like of a post at once
+        try{
+            const likeToDeleteQuery = query(
+                likesRef, 
+                where("postId","==", post.id), 
+            );
+            const likeToDeleteData = await getDocs(likeToDeleteQuery);
+            likeToDeleteData.docs.map(
+                async (likeData) => {
+                    const likeToDelete = doc(db,"likes",likeData.id)
+                    await deleteDoc(likeToDelete);
+                }
+            )
+            getLikes();
+        } catch(err){
+            console.log(err);
+        }
+        
+    };
     const hasUserLiked = likes?.find((like)=> like.userId === user?.uid);
     useEffect(() =>{
         getLikes();
@@ -109,17 +131,41 @@ export const Post = (props: Props) => {
         } catch(err){
             console.log(err);
         }
-        
     };
-
+    const removeComments = async () => { 
+        //this is for remove all comments when deleted post
+        try{
+            const commentToDeleteQuery = query(
+                commentsRef, 
+                where("postId","==", post.id), 
+            );
+            const commentToDeleteData = await getDocs(commentToDeleteQuery);
+            
+            commentToDeleteData.docs.map(async (commentData)=>{
+                const commentToDelete = doc(db,"comments",commentData.id);
+                await deleteDoc(commentToDelete);
+            })
+            getComments();
+        } catch(err){
+            console.log(err);
+        } 
+    };
     useEffect(() =>{
         getComments();
     },[])
 
-
-
     return (
         <div className="post">
+            <button className="delete" onClick={
+                    ()=>{
+                        if(post.userId == user?.uid){
+                            props.removePost(post.id)
+                            removeComments();
+                            removeLikes();
+                        }
+                    }
+                }>X
+            </button>
             <div className="title">
                 <h1>{post.title}</h1>
             </div>

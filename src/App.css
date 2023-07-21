@@ -3,6 +3,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
+  position: relative;
 }
 
 /* Styles for the post title */
@@ -10,6 +11,22 @@
   font-size: 20px;
   margin: 0;
   color: #333;
+}
+.post .delete {
+  display: none;
+  position: absolute;
+  right:10px;
+  top:10px;
+  border-radius: 10px;
+  background-color: #e74c3c;
+}
+.post:hover .delete {
+  display: block;
+}
+.post .delete:hover {
+  background-color: crimson;
+  color: white;
+  cursor:pointer
 }
 
 /* Styles for the post body */
@@ -152,3 +169,4 @@
 .comment:hover button {
   display: inline;
 }
+
