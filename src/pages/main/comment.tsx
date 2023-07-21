@@ -1,5 +1,4 @@
 import { Comment as IComment } from "./post"
-import "./comment.css"
 interface Props {
     comment: IComment;
     removeComment: any;
