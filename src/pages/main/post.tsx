@@ -173,17 +173,19 @@ export const Post = (props: Props) => {
                 <h1>{post.title}</h1>
             </div>
             <div className="body">
-                <p>{post.description}</p>
-                <div>{commentsList?.map((eachComment) => (<CommentPost comment={eachComment} removeComment={removeComment}/>))}</div>
-            </div>
-            <div className="comment">
-                <input type="text" placeholder="type your comment here..." onChange={(event)=>{handleChange(event)}}></input>
-                <button onClick={addComment}>Add Comment</button>
+                <p><>&#128269;</>{post.description}</p>
             </div>
             <div className="footer">
                 <p>@{post.username}</p>
                 <button onClick={hasUserLiked ? removeLike : addLike }> {hasUserLiked ? <>&#128078;</> : <>&#128077;</>} </button>
                 {likes && <p>Likes:{likes?.length}</p> }
+            </div>
+            <div className="comment">
+                <div>{commentsList?.map((eachComment) => (<CommentPost comment={eachComment} removeComment={removeComment}/>))}</div>
+                <div className="enterComment">
+                    <input type="text" placeholder="type your comment here..." onChange={(event)=>{handleChange(event)}}></input>
+                    <button onClick={addComment}>Add Comment</button>
+                </div>
             </div>
         </div>
     )

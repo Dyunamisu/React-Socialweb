@@ -10,11 +10,11 @@ export const CommentPost = (props: Props) => {
     const commentId = props.comment.commentId;
     const [user] = useAuthState(auth);
     return (
-        <div className="comment">
-              <span className="showedComment">
+        <div className="showedComment">
+              <span>
                 {props.comment.username}: {props.comment.userComment}
               </span>
-             {props.comment.userId === user?.uid && <button onClick={()=>removeComment(commentId)}>X</button>}
+             {props.comment.userId === user?.uid && <button id="deleteComment" onClick={()=>removeComment(commentId)}>X</button>}
         </div>
     )
 }

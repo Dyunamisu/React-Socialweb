@@ -19,7 +19,7 @@ export const Navbar = () => {
             <div className="user">
                 {user && (
                     <>
-                    <p>{user?.displayName}</p>
+                    <span className="navUsername"><p>{user?.displayName}</p></span>
                     <img src={user?.photoURL || ""} width="100" height = "100"/>
                     <button onClick={signUserOut}>Log Out</button>
                     </>

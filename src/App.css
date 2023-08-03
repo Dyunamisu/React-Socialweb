@@ -1,3 +1,7 @@
+*{
+  font-family: cursive;
+}
+
 /* Styles for the post container */
 .post {
   border: 1px solid #ccc;
@@ -8,7 +12,7 @@
 
 /* Styles for the post title */
 .post .title h1 {
-  font-size: 20px;
+  font-size: 24px;
   margin: 0;
   color: #333;
 }
@@ -28,16 +32,10 @@
   color: white;
   cursor:pointer
 }
-
 /* Styles for the post body */
 .post .body p  {
   margin: 10px 0;
   color: #383737;
-}
-
-.comment{
-  margin: 10px 0;
-  color: #686666;
 }
 
 /* Styles for the post footer */
@@ -161,19 +159,47 @@
 .signIn #signInBtn:hover {
   background-color: #3367D6; /* Darker Google blue */
 }
-
-.comment button {
+/* comment */
+.comment{
+  margin: 10px 0;
+  color: #686666;
+}
+#deleteComment {
+  margin-left: 5px;
+  font-size: 8px;
+  border-radius: 20px;
+}
+#deleteComment:hover {
+  background-color: crimson;
+  color: white;
+  cursor:pointer;
+}
+.enterComment button {
   display: none;
+  margin-left: 5px;
+}
+.enterComment:hover button {
+  display: inline;
+  cursor: pointer;
 }
 
-.comment:hover button {
-  display: inline;
-}
-.showedComment {
+.showedComment span {
   background-color: #f9f9f9;
   border-radius: 10px;
   padding: 5px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
-
+.showedComment{
+  margin: 10px 0;
+  color: #686666;
+  margin-top: 12px;
+}
+.showedComment button {
+  display: none;
+  margin-left: 5px;
+}
+.showedComment:hover button{
+  display: inline;
+  cursor: pointer;
+}
