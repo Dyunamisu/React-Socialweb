@@ -1,4 +1,6 @@
 import { Comment as IComment } from "./post"
+import { auth } from '../../config/firebase';
+import { useAuthState } from "react-firebase-hooks/auth";
 interface Props {
     comment: IComment;
     removeComment: any;
@@ -6,12 +8,13 @@ interface Props {
 export const CommentPost = (props: Props) => {
     const removeComment = props.removeComment;
     const commentId = props.comment.commentId;
+    const [user] = useAuthState(auth);
     return (
         <div className="comment">
               <span className="showedComment">
                 {props.comment.username}: {props.comment.userComment}
               </span>
-             <button onClick={()=>removeComment(commentId)}>X</button>
+             {props.comment.userId === user?.uid && <button onClick={()=>removeComment(commentId)}>X</button>}
         </div>
     )
 }

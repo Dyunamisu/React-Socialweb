@@ -1,10 +1,9 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../config/firebase";
 import { Post as IPost } from "./main"
-import { addDoc, getDocs,  collection , query, where ,deleteDoc, doc, documentId} from "firebase/firestore";
+import { addDoc, getDocs,  collection , query, where ,deleteDoc, doc} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { CommentPost } from "./comment";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
     post: IPost;
@@ -101,11 +100,16 @@ export const Post = (props: Props) => {
     }
     const getComments = async () => {
         const data = await getDocs(commentsDoc);
-        setCommentsList(data.docs.map((doc) =>({userId: doc.data().userId, userComment:doc.data().userComment,username:doc.data().username,commentId:doc.data().commentId})));
+        setCommentsList(data.docs.map((doc) =>({
+            userId: doc.data().userId, 
+            userComment:doc.data().userComment,
+            username:doc.data().username,
+            commentId:doc.data().commentId
+        })));
     };
     const addComment = async () => {
         
-        const newDoc = await addDoc(commentsRef,{
+        await addDoc(commentsRef,{
             userId: user?.uid,
             postId: post.id,
             username:user?.displayName,
@@ -124,7 +128,6 @@ export const Post = (props: Props) => {
                 where("commentId","==", commentId)
             );
             const commentToDeleteData = await getDocs(commentToDeleteQuery);
-            const likeId = commentToDeleteData.docs[0].id
             const commentToDelete = doc(db,"comments",commentToDeleteData.docs[0].id);
             await deleteDoc(commentToDelete);
             getComments();
@@ -156,16 +159,16 @@ export const Post = (props: Props) => {
 
     return (
         <div className="post">
-            <button className="delete" onClick={
+            {post.userId === user?.uid && <button className="delete" onClick={
                     ()=>{
-                        if(post.userId == user?.uid){
+                        if(post.userId === user?.uid){
                             props.removePost(post.id)
                             removeComments();
                             removeLikes();
                         }
                     }
                 }>X
-            </button>
+            </button>}
             <div className="title">
                 <h1>{post.title}</h1>
             </div>
